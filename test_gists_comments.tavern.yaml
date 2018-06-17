@@ -1,0 +1,49 @@
+test_name: Get information about a public gist
+
+stages:
+    - name: Get html url of public gist
+      request:
+          url: "https://api.github.com/gists/36b7cc0cf07786860660785b4fc1c33a"
+          method: GET
+
+      response:
+          status_code: 200
+          body: 
+            html_url: "https://gist.github.com/36b7cc0cf07786860660785b4fc1c33a"
+
+    - name: Get owner name of public gist
+      request:
+          url: "https://api.github.com/gists/36b7cc0cf07786860660785b4fc1c33a"
+          method: GET
+
+      response:
+          status_code: 200
+          body: 
+              owner.login: "mesodiar"
+
+    - name: Get content of public gist
+      request:
+          url: "https://api.github.com/gists/36b7cc0cf07786860660785b4fc1c33a"
+          method: GET
+
+      response:
+          status_code: 200
+          body: 
+              files.gistfile1.content: "hello"
+
+    - name: Comment on  public gist
+      request:
+          url: "https://api.github.com/gists/36b7cc0cf07786860660785b4fc1c33a/comments"
+          headers:
+              content-type: application/json
+              authorization: 'token {tavern.env_vars.GITHUB_TOKEN}'
+          method: POST
+          json:
+              body: "hello from the other side"
+      response:
+          status_code: 201
+          body: 
+              body: "{tavern.request_vars.json.body}"
+
+
+
